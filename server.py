@@ -26,10 +26,16 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/showSummary", methods=["POST"])
+@app.route("/show-summary", methods=["POST"])
 def show_summary():
-    club = [club for club in clubs if club["email"] == request.form["email"]][0]
-    return render_template("welcome.html", club=club, competitions=competitions)
+    matching_clubs = [club for club in clubs if club["email"] == request.form["email"]]
+
+    if matching_clubs:
+        club = matching_clubs[0]
+        return render_template("welcome.html", club=club, competitions=competitions)
+    else:
+        flash("Sorry, that email wasn't found.")
+        return render_template("index.html")
 
 
 @app.route("/book/<competition>/<club>")
@@ -45,7 +51,7 @@ def book(competition, club):
         return render_template("welcome.html", club=club, competitions=competitions)
 
 
-@app.route("/purchasePlaces", methods=["POST"])
+@app.route("/purchase-places", methods=["POST"])
 def purchase_places():
     competition = [c for c in competitions if c["name"] == request.form["competition"]][
         0
