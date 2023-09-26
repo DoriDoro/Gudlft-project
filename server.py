@@ -65,7 +65,7 @@ def show_summary():
             competitions_done=competitions_done,
         )
     else:
-        flash("Sorry, that email wasn't found.")
+        flash("Sorry, that email was not found.")
         return render_template("index.html")
 
 
@@ -109,33 +109,29 @@ def purchase_places():
     club = [c for c in clubs if c["name"] == request.form["club"]][0]
     places_required = int(request.form["places"])
 
-    if (
-        (places_required <= int(competition["number_of_places"]))
-        and (places_required <= 12)
-        and (places_required > 0)
-    ):
-        competition["number_of_places"] = (
-            int(competition["number_of_places"]) - places_required
-        )
-        flash("Great-booking complete!")
-        return render_template(
-            "welcome.html",
-            club=club,
-            competitions_ongoing=competitions_ongoing,
-            competitions_done=competitions_done,
-        )
-    elif places_required > 12:
-        flash("You can not use more than 12 points!")
+    if places_required <= 0 or places_required > 12:
+        if places_required <= 0:
+            flash("Please enter a number between 1 and 12.")
+        else:
+            flash("You can not use more than 12 points!")
         return render_template("booking.html", club=club, competition=competition)
-    elif places_required <= 0:
-        flash("Please enter a number between 1 and 12.")
-        return render_template("booking.html", club=club, competition=competition)
-    else:
+
+    if places_required > int(competition["number_of_places"]):
         flash("You are about to use more points than you have!")
         return render_template("booking.html", club=club, competition=competition)
 
+    competition["number_of_places"] = (
+        int(competition["number_of_places"]) - places_required
+    )
+    flash("Great-booking complete!")
+    return render_template(
+        "welcome.html",
+        club=club,
+        competitions_ongoing=competitions_ongoing,
+        competitions_done=competitions_done,
+    )
 
-# TODO: Add route for points display
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html", clubs=clubs)
