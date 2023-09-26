@@ -23,7 +23,7 @@ competitions = load_competitions()
 clubs = load_clubs()
 
 
-def check_is_competition_ongoing():
+def check_competitions_date():
     """check the competitions if ongoing or done
     and transform to a boolean value"""
 
@@ -52,7 +52,7 @@ def show_summary():
     """check if the email address is correct
     renders the list of competitions"""
 
-    competitions_ongoing, competitions_done = check_is_competition_ongoing()
+    competitions_ongoing, competitions_done = check_competitions_date()
 
     matching_clubs = [club for club in clubs if club["email"] == request.form["email"]]
 
@@ -73,7 +73,7 @@ def show_summary():
 def book(competition, club):
     """renders the chosen competition to book a place"""
 
-    competitions_ongoing, competitions_done = check_is_competition_ongoing()
+    competitions_ongoing, competitions_done = check_competitions_date()
 
     found_club = [c for c in clubs if c["name"] == club][0]
     found_competition = [c for c in competitions if c["name"] == competition][0]
@@ -101,7 +101,7 @@ def purchase_places():
         - 0 places
     """
 
-    competitions_ongoing, competitions_done = check_is_competition_ongoing()
+    competitions_ongoing, competitions_done = check_competitions_date()
 
     competition = [c for c in competitions if c["name"] == request.form["competition"]][
         0
@@ -136,6 +136,9 @@ def purchase_places():
 
 
 # TODO: Add route for points display
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html", clubs=clubs)
 
 
 @app.route("/logout")

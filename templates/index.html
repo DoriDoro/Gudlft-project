@@ -1,27 +1,17 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUDLFT Registration</title>
-</head>
-<body>
-    <h1>Welcome to the GUDLFT Registration Portal!</h1>
+{% extends 'base_layout.html' %}
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-       </ul>
-    {% endif %}
-    {% endwith %}
+{% block title %}
+    GUDLFT Registration
+{% endblock %}
 
-    Please enter your secretary email to continue:
-    <form action="show-summary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id=""/>
-        <button type="submit">Enter</button>
-    </form>
-</body>
-</html>
+{% block content %}
+<p>Please enter your secretary email to continue:</p>
+<form action="show-summary" method="post">
+    <label for="email">Email:</label>
+    <input type="email" name="email" id=""/>
+    <button type="submit">Enter</button>
+</form>
+
+<hr>
+<p>Are you curious about the total points of all clubs? Then <a href="{{ url_for('dashboard') }}">go to dashboard</a></p>
+{% endblock %}
