@@ -7,15 +7,15 @@
 <body>
     <h1>Welcome to the GUDLFT Registration Portal!</h1>
 
-    {% with messages = get_flashed_messages()%}
+    {% with messages = get_flashed_messages() %}
     {% if messages %}
         <ul>
        {% for message in messages %}
-            <li>{{message}}</li>
+            <li>{{ message }}</li>
         {% endfor %}
        </ul>
-    {% endif%}
-    {%endwith%}
+    {% endif %}
+    {% endwith %}
 
     Please enter your secretary email to continue:
     <form action="show-summary" method="post">
